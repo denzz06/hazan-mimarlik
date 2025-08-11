@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Hazan Mimarlık - Bienal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- LOGO -->
+  <header class="hero">
+    <img src="media/hazan-logo.png" alt="Hazan Mimarlık" class="logo">
+  </header>
+
+  <!-- GRID (3 sütun) -->
+  <main class="section">
+    <div class="gallery">
+      <!-- 1) Video Kart -->
+      <article class="card" data-type="video" data-src="media/isik-senaryosu.mp4" aria-label="Işık Senaryosu">
+        <video autoplay muted loop playsinline preload="metadata" poster="media/organik-struktur.jpg">
+          <source src="media/isik-senaryosu.mp4" type="video/mp4">
+        </video>
+        <span class="veil"></span>
+        <div class="card-title">Işık Senaryosu — Site-specific Enstalasyon</div>
+      </article>
+
+      <!-- 2) Görsel Kart -->
+      <article class="card" data-type="image" data-src="media/organik-struktur.jpg" aria-label="Organik Strüktür">
+        <img src="media/organik-struktur.jpg" alt="Organik Strüktür">
+        <span class="veil"></span>
+        <div class="card-title">Organik Strüktür — Elastik Yüzey Enstalasyonu</div>
+      </article>
+
+      <!-- 3) Yeni: Proje Görseli -->
+      <article class="card" data-type="image" data-src="media/hazan-proje.jpg" aria-label="Hazan Proje">
+        <img src="media/hazan-proje.jpg" alt="Hazan Proje">
+        <span class="veil"></span>
+        <div class="card-title">Hazan Proje — Seçki</div>
+      </article>
+    </div>
+  </main>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <div class="lightbox-inner" id="lb-inner">
+      <button class="lightbox-close" id="lb-close" aria-label="Kapat">&times;</button>
+    </div>
+  </div>
+
+  <script>
+    // kart tıklayınca modal aç
+    const cards = document.querySelectorAll('.card');
+    const lb = document.getElementById('lightbox');
+    const inner = document.getElementById('lb-inner');
+    const closeBtn = document.getElementById('lb-close');
+
+    function openLB(type, src){
+      inner.querySelectorAll('img,video').forEach(n=>n.remove());
+      if(type==='video'){
+        const v=document.createElement('video');
+        v.src=src; v.controls=true; v.autoplay=true; v.playsInline=true;
+        inner.insertBefore(v, closeBtn);
+      }else{
+        const i=document.createElement('img'); i.src=src; i.alt="";
+        inner.insertBefore(i, closeBtn);
+      }
+      lb.classList.add('is-open'); document.body.style.overflow='hidden';
+    }
+    function closeLB(){
+      lb.classList.remove('is-open'); document.body.style.overflow='';
+      const v=inner.querySelector('video'); if(v) v.pause();
+    }
+
+    cards.forEach(c=>{
+      c.addEventListener('click', ()=>openLB(c.dataset.type, c.dataset.src), {passive:true});
+    });
+    lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
+    closeBtn.addEventListener('click', closeLB);
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLB(); });
+  </script>
+</body>
+</html>

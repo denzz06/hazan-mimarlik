@@ -1,0 +1,105 @@
+/* ===== Reset & Body ===== */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:"Yu Gothic UI","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  color:#fff; overflow-x:hidden; text-align:center;
+  background: radial-gradient(1200px 800px at 70% -10%, #101522 0%, #0c1120 45%, #06070b 80%),
+              linear-gradient(120deg,#0b1020,#060a12 60%,#05070c);
+  background-attachment:fixed; animation:bgShift 18s ease-in-out infinite alternate;
+}
+@keyframes bgShift{from{background-position:0% 0%,0% 0%} to{background-position:25% 12%,60% 40%}}
+body::before{
+  content:""; position:fixed; inset:-20%; z-index:-1; pointer-events:none; opacity:.08; mix-blend-mode:overlay;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 1px, transparent 1px 2px),
+             repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px);
+  animation:grain 2.8s steps(6,end) infinite; filter:blur(.25px);
+}
+@keyframes grain{to{transform:translate3d(-10px,6px,0)}}
+
+/* ===== Hero / Logo ===== */
+/* (Sen logoyu ayarlamıştın; sadece boşluk dengesi duruyor) */
+.hero{
+  min-height: clamp(170px, 30svh, 340px);
+  padding: 8px 16px 8px;               /* üst = alt */
+  display:flex; align-items:center; justify-content:center;
+}
+.logo{
+  width: clamp(360px, 60vw, 1200px);   /* büyük ve responsive */
+  height:auto; display:block; margin:0 auto;
+  filter:
+    drop-shadow(0 35px 70px rgba(255,255,255,0.35))
+    drop-shadow(0 14px 40px rgba(255,255,255,0.25));
+  transition: transform .45s ease, filter .45s ease;
+  user-select:none; -webkit-user-drag:none;
+}
+.logo:hover{ transform:scale(1.03) }
+
+/* ===== Grid (3 sütun, kenarlardan boşluk) ===== */
+.section{ max-width:1480px; margin:8px auto 80px; padding:0 24px; }
+
+/* Varsayılan: küçük ekranlarda 1 sütun */
+.gallery{
+  display:grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 18px;  /* kenarlardan hafif boşluk */
+}
+
+/* Orta ekran: 2 sütun */
+@media (min-width: 768px){
+  .gallery{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    padding: 0 28px;
+  }
+}
+
+/* Büyük ekran: 3 sütun */
+@media (min-width: 1200px){
+  .gallery{
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    padding: 0 40px;  /* kenarlardan biraz daha boşluk */
+  }
+}
+
+/* Kart — kare ve overlay başlık */
+.card{
+  position:relative; overflow:hidden; border-radius:22px;
+  aspect-ratio: 1 / 1; height:auto;
+  background:linear-gradient(160deg,#151b2a,#0b0f19 65%);
+  box-shadow:0 20px 60px rgba(0,0,0,.5), 0 2px 12px rgba(0,0,0,.25);
+  display:flex; align-items:flex-end; justify-content:flex-start;
+  text-decoration:none; color:inherit; cursor:pointer;
+}
+.card img,.card video{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1;
+  transition:transform .45s ease, filter .45s ease;
+}
+.card:hover img,.card:hover video{ transform:scale(1.05); filter:saturate(1.05) contrast(1.07) }
+
+.veil{ position:absolute; inset:0; z-index:2;
+  background:linear-gradient(180deg, rgba(8,10,14,0), rgba(8,10,14,.35) 55%, rgba(8,10,14,.85));
+}
+
+/* Başlık bandı — RAL 9010 tonda yazı */
+.card-title{
+  position:relative; z-index:3; width:100%;
+  padding: 14px 14px; text-align:left; font-weight:800;
+  font-size: clamp(12px, 0.85vw + 7px, 17px);
+  color:#F6F5F0; background:rgba(0,0,0,.22); backdrop-filter:blur(4px);
+  border-top:1px solid rgba(255,255,255,.12);
+  border-bottom-left-radius:22px; border-bottom-right-radius:22px;
+}
+
+/* ===== Lightbox (modal) ===== */
+.lightbox{ position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+  background:rgba(0,0,0,.9); z-index:1000; backdrop-filter:blur(6px); }
+.lightbox.is-open{ display:flex; }
+.lightbox-inner{ position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:24px; }
+.lightbox-inner img,.lightbox-inner video{ max-width:92vw; max-height:92vh; border-radius:12px; }
+.lightbox-close{
+  position:absolute; top:14px; right:18px; border:none; background:rgba(0,0,0,.55);
+  color:#fff; font-size:32px; line-height:1; padding:4px 10px; border-radius:8px; cursor:pointer;
+}
